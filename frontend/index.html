@@ -945,9 +945,9 @@ input[type=range].vol::-webkit-slider-thumb {
             <button class="g-btn" id="g-btn" onclick="toggleGesture()">▶&nbsp; Start Gesture Control</button>
             <div class="g-hints">
                 <div>🤏 <b>Pinch</b> — pause / play</div>
-                <div>👋 <b>Swipe right</b> — next track</div>
-                <div>👋 <b>Swipe left</b> — prev track</div>
-                <div>✋ <b>Open palm still</b> — volume mode</div>
+                <div>✋ <b>Open palm</b> — volume mode</div>
+                <div>👆 <b>L sign</b> — prev track</div>
+                <div>✌ <b>V sign</b> — next track</div>
             </div>
             <div class="g-log-wrap">
                 <div class="g-log-lbl">Gesture Log</div>
@@ -971,23 +971,27 @@ function applyMoodToUI(mood, confidence) {
 }
 
 // Ensure this specific part of your switchView function in index.html is updated:
+// REPLACE your current switchView in index.html with this:
 function switchView(name, btn) {
+    // 1. Hide all panels
     document.querySelectorAll('.view').forEach(v => { 
         v.classList.remove('on'); 
         v.style.display = 'none'; 
     });
+    // 2. Un-highlight all buttons
     document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('on'));
     
+    // 3. Show the requested panel
     const v = document.getElementById(`view-${name}`);
     if (v) {
         v.style.display = 'flex'; 
         v.classList.add('on'); 
+        btn.classList.add('on');
     }
-    btn.classList.add('on');
 
-    // Trigger data loading based on view
+    // 4. TRIGGER DATA FETCH (Crucial for Heatmap)
     if (name === 'journal') loadJournal();
-    if (name === 'heatmap') renderHeatmap(); // This calls the fetch + draw
+    if (name === 'heatmap') renderHeatmap(); 
 }
 
 document.getElementById('user-input').addEventListener('input', function(){
